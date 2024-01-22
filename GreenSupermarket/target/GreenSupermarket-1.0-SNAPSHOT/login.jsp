@@ -26,7 +26,9 @@
                 <img class="img1" src="assets/images/nav.png">
                 <ul>
                     <li><a href="home.jsp">Home</a></li>
-                    <li><a href="/">Categories</a></li>
+                    <li><a href="vegetableC.jsp">Vegetable</a></li>
+                    <li><a href="fruitsC.jsp">Fruits</a></li>
+                    <li><a href="meatsc.jsp">Meat</a></li>
                     <li><a href="feedback.jsp">Feedback</a></li>
                     <!-- Add text inside the hamburger menu for smaller screens -->
                     <li class="menu-item"><a href="wishlist.jsp">Wishlist</a></li>
@@ -67,7 +69,7 @@
             </div>
         </div>
     </div>
- <section>
+<!-- <section>
         <footer id="footer">
             <div id="container">
                 <div id="row">
@@ -108,7 +110,8 @@
                 </div>
             </div>
         </footer>
-    </section>   
+    </section>   -->
+    
 <style>
     
     body {
@@ -137,7 +140,7 @@
     background-color: rgb(255, 255, 255);
     justify-content: space-between;
     flex-wrap: wrap;
-    padding-top: 20px;
+    padding-top: -5%;
     padding-left: 4%;
     padding-right: 4%;
     padding-bottom: 5px;
@@ -157,7 +160,7 @@
   nav ul li a {
     color: rgb(0, 0, 0);
     text-decoration: none;
-    font-size: 15px;
+    font-size: 18px;
     font-weight: bold;
     position: relative;
   }
@@ -365,7 +368,7 @@
 .form-box h2 {
     text-align: center;
     margin-bottom: 50px;
-    margin-top: -25px;
+    margin-top: 50px;
     font-size: 35px;
 }
 
@@ -514,8 +517,146 @@ form button:hover{
         transform: translateY(-110%);
     }
 }
+ #container{
+    max-width: 2880px;
+    margin: auto;
+    position:absolute;
+}
 
-                        
+#row{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+ul{
+    list-style: none;
+}
+
+#footer {
+    background-color: rgb(8, 87, 35);
+    padding: 20px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#footercol{
+    width: 25%;
+    padding: 0 50px;
+}
+
+#footercol ul li p{
+    margin: 0 0 20px 0;
+    display: block;
+    color: #ffffff;
+    margin-block-start: 1em;
+    margin-left: 0;
+    margin-right: 0;
+
+}
+
+
+#footercol h4{
+    font-size: 18px;
+    color: #ffffff;
+    text-transform: capitalize;
+    margin-bottom: 30px;
+    font-weight: 500;
+    position: relative;
+}
+
+#footercol h4::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    background-color: #d9ff00;
+    height: 2px;
+    box-sizing: border-box;
+    width: 50px;
+}
+
+#footercol ul li:not(:last-child){
+    margin-bottom: 10px;
+}
+
+#footercol ul li a{
+    font-size: 16px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 300;
+    color: #ffffff;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+#footercol ul li a:hover{
+    color: #ffffff;
+    padding-left: 8px;
+}
+
+#footercol #social p{
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-color: #fffffffe;
+    margin: 0 10px 10px 0;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    color: #ffffff;
+    transition: all 0.5s ease;
+}
+
+#footercol #social a:hover{
+    color: #24262b;
+    background-color: #ffffff;
+}
+
+#footercol #social a {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    margin: 0 10px 10px 0;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    color: #ffffff;
+    transition: all 0.5s ease;
+}
+
+#footercol #social a:hover {
+    transform: scale(1.2); /* Optional: Increase size on hover */
+}
+
+#footercol #social a.facebook {
+    background-color: #214dab; /* Facebook color */
+}
+
+#footercol #social a.instagram {
+    background-color: #a21886; /* Instagram color */
+}
+
+#footercol #social a.youtube {
+    background-color: #c4302b; /* YouTube color */
+}
+
+
+@media(max-width: 800px){
+    #footercol{
+        width: 50%;
+        margin-bottom: 30px;
+    }
+}
+
+@media(max-width: 500px){
+    #footercol{
+        height: 90%;
+        width: 100%;
+    }
+    
+}
+                       
 </style>
 </body>
 </html>

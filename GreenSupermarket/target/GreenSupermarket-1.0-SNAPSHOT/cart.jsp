@@ -7,7 +7,6 @@
 <%@page import="Class.CartDAO"%>
 <%@page import="GetterSetters.CartItems"%>
 <%@page import="java.util.List"%>
-<%@page import="Servlet.Wishlist"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -15,6 +14,7 @@
     String UserEmail = (String) session.getAttribute("userEmail");
     List<CartItems> cart = CartDAO.getCart(UserEmail);
     request.setAttribute("cart", cart);
+
 %>
 <html lang="en">
 <head>
@@ -37,7 +37,9 @@
                 <img class="img1" src="assets/images/nav.png">
                 <ul>
                     <li><a href="home.jsp">Home</a></li>
-                    <li><a href="/">Categories</a></li>
+                    <li><a href="vegetableC.jsp">Vegetable</a></li>
+                    <li><a href="fruitsC.jsp">Fruits</a></li>
+                    <li><a href="meatsc.jsp">Meat</a></li>
                     <li><a href="feedback.jsp">Feedback</a></li>
                     <!-- Add text inside the hamburger menu for smaller screens -->
                     <li class="menu-item"><a href="wishlist.jsp">Wishlist</a></li>
@@ -106,8 +108,10 @@
                         </div>
                         <div class="wishlist-cell">
                             <span class="wishlist-label">
-                                <form>
-                                     <input style="height: 40px; font-size: 20px;" type="number" max="${c.getQuantity()}" min="0" step="100" oninput="updateQuantity(this, ${c.getPrice()})">g
+                                <form action="<%=request.getContextPath()%>/UpdateCart" method="post">
+                                    <input type="hidden" name="productId" value="${c.getId()}">
+                                    <input name="cartquantity" data-product-id="${c.getId()}" data-initial-price="${c.getPrice()}" style="height: 40px; font-size: 20px;" type="number" max="${c.getQuantity()}" min="0" step="100" oninput="updateQuantity(this)">g
+                                     <button class="btn remove-btn" type="submit" id="heart">Update</button>
                                 </form>
                             </span>
                         </div>
@@ -138,14 +142,14 @@
                             <h1 class="wishlist-label" id="total-quantity"></h1>
                         </div>
                         <div class="wishlist-cell">
-                            <h1 class="wishlist-label" id="total-price">0.00</h1>
+                            <h1 class="wishlist-label" name="totalprice" id="total-price">0.00</h1>
                         </div>
                     </div>
                     
                     
                       
                     
-                    <form action="<%=request.getContextPath()%>/CheckoutServlet" method="post">
+                    <form action="<%=request.getContextPath()%>/OrderServlet" method="post">
                         <button class="btn checkout-btn" style="background-color: red; color: white; font-size: 20px" type="submit">Procees to checkout</button>
                         
                     </form>
@@ -180,13 +184,36 @@
         input.value = adjustedValue;
     }
      function updateQuantity(input, initialPrice) {
-        var quantity = input.value;
-        var increasedPrice = initialPrice * (quantity / 100); 
+    var quantity = input.value;
+    var productId = input.getAttribute('data-product-id');
 
-      
-        var priceElement = input.closest('.wishlist-row').querySelector('.wishlist-cell:last-child .wishlist-label');
-        priceElement.textContent = increasedPrice.toFixed(2); 
-    }
+    // Save the entered quantity in local storage
+    localStorage.setItem('quantity_' + productId, quantity);
+
+    var increasedPrice = initialPrice * (quantity / 100);
+
+    // Update the displayed price
+    var priceElement = input.closest('.wishlist-row').querySelector('.wishlist-cell:last-child .wishlist-label');
+    priceElement.textContent = increasedPrice.toFixed(2);
+}
+document.addEventListener('DOMContentLoaded', function () {
+    // Loop through all quantity inputs
+    var quantityInputs = document.querySelectorAll('input[name="cartquantity"]');
+    quantityInputs.forEach(function (input) {
+        var productId = input.getAttribute('data-product-id');
+
+        // Load the stored quantity from local storage
+        var storedQuantity = localStorage.getItem('quantity_' + productId);
+
+        if (storedQuantity !== null) {
+            // Set the stored quantity in the input field
+            input.value = storedQuantity;
+
+            // Update the displayed price
+            updateQuantity(input, parseFloat(input.getAttribute('data-initial-price')));
+        }
+    });
+});
     
 function calculateTotal() {
     console.log('calculateTotal() function is called.');
@@ -217,6 +244,19 @@ function calculateTotal() {
    
     totalPriceElement.textContent = totalPrice.toFixed(2); // Assuming 2 decimal places for the price
 }
+
+ // Set a timer for 10 minutes (600,000 milliseconds)
+    var timer = setTimeout(function() {
+        // Redirect to a servlet/controller to handle the cleanup
+        window.location.href = '<%=request.getContextPath()%>/clear_order';
+    }, 600000); // 10 minutes
+
+    // Reset the timer if the user clicks the checkout button
+    function resetTimer() {
+        clearTimeout(timer);
+        // Optionally, you can restart the timer here if needed
+    }
+
 
 </script>
         

@@ -37,7 +37,7 @@ public class Add_Product extends HttpServlet {
         String fileName = getSubmittedFileName(filePart);
 
         // Specify the absolute path to save the file
-        String absolutePath = "E:\\GreenSupermarketSite\\GreenSupermarket\\src\\main\\webapp\\assets\\images\\" + fileName;
+        String absolutePath = "E:\\GreenSupermarketSite\\GreenSupermarket with paypal\\src\\main\\webapp\\assets\\images\\" + fileName;
 
         // Create the directory if it doesn't exist
         File uploadDir = new File(absolutePath).getParentFile();

@@ -5,7 +5,8 @@
 package Class;
 
 import GetterSetters.CartItems;
-import Servlet.wishlistitems;
+import GetterSetters.UpdatedCart;
+import GetterSetters.wishlistitems;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -92,5 +93,61 @@ public class CartDAO {
             e.printStackTrace();
         }
     }
+       
+      
+    public static final String DB_URL = "jdbc:mysql://localhost:3306/GreenSupermarketDB";
+    public static final String USER = "root";
+    public static final String PASSWORD = "4851";
+
+    public static void updateCart(String userEmail, int cartQuantity, int productId) {
+        try {
+            // Create a database connection
+            Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+
+            // Update orders table with cart data
+String updateQuery = "UPDATE Cart \n" +
+                     "SET cart_quantity = ? \n" +
+                     "WHERE c_email = ? \n" +
+                     "  AND prod_id = ?;";
+            try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+                updateStatement.setInt(1, cartQuantity);
+                updateStatement.setString(2, userEmail);
+                updateStatement.setInt(3, productId);
+                updateStatement.executeUpdate();
+            }
+            
+            UpdatedCart updatedCart = null;
+            String retrieveQuery = "SELECT * FROM Cart WHERE c_email = ? AND prod_id = ?";
+            try (PreparedStatement selectStatement = connection.prepareStatement(retrieveQuery)) {
+                selectStatement.setString(1, userEmail);
+                selectStatement.setInt(2, productId);
+                try (ResultSet resultSet = selectStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        updatedCart = new UpdatedCart(
+                                resultSet.getString("c_email"),
+                                resultSet.getInt("prod_id"),
+                                resultSet.getInt("cart_quantity")
+                        );
+                    }
+                }
+            }
+
+            // Delete the same quantity from the inventory table
+            String deleteQuery = "UPDATE Inventory SET prod_quantity = prod_quantity - ? WHERE prod_id = ?";
+            try (PreparedStatement deleteStatement = connection.prepareStatement(deleteQuery)) {
+                deleteStatement.setInt(1, cartQuantity);
+                deleteStatement.setInt(2, productId);
+                deleteStatement.executeUpdate();
+            }
+
+            // Close the database connection
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception based on your application's requirements
+        }
+    }
+
+        
+       
     
 }

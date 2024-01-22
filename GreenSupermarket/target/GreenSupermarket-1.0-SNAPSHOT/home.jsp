@@ -1,11 +1,13 @@
+<%@page import="GetterSetters.InventoryItem"%>
+<%@page import="Class.InventoryDAO"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
-<%@ page import="Servlet.InventoryDAO" %>
-<%@ page import="Servlet.InventoryItem" %>
+<%@ page import="Class.InventoryDAO" %>
+<%@ page import="GetterSetters.InventoryItem" %>
 
 
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     
@@ -34,7 +36,9 @@
                 <img class="img1" src="assets/images/nav.png">
                 <ul>
                     <li><a href="home.jsp">Home</a></li>
-                    <li><a href="/">Categories</a></li>
+                    <li><a href="vegetableC.jsp">Vegetable</a></li>
+                    <li><a href="fruitsC.jsp">Fruits</a></li>
+                    <li><a href="meatsc.jsp">Meat</a></li>
                     <li><a href="feedback.jsp">Feedback</a></li>
                     <!-- Add text inside the hamburger menu for smaller screens -->
                     <li class="menu-item"><a href="wishlist.jsp">Wishlist</a></li>
@@ -77,15 +81,24 @@
     
     <div class="card-container">
     <%--<jsp:useBean id="inventoryDAO" class="Servlet.InventoryDAO" /> --%>
-   <c:forEach var="pro" items="${products}">
+<c:forEach var="pro" items="${products}">
     <div class="card">
         <p class="product-name">${pro.getName()}</p>
         <p class="product-price">LKR ${pro.getPrice()}</p>
-        <img src=${pro.getImage()} alt="${pro.getName()}">
+        <img src="${pro.getImage()}" alt="${pro.getName()}">
         
         <form action="<%=request.getContextPath()%>/AddCartServlet" method="post">
             <input type="hidden" name="productId" value="${pro.getId()}">
-            <button style="  width: 190px; height: 35px " class="add-to-cart-btn" type="submit" >Add to cart</button>
+            
+            <%-- Check if quantity is greater than 0 --%>
+            <c:choose>
+                <c:when test="${pro.getQuantity() > 0}">
+                    <button style="width: 190px; height: 35px" class="add-to-cart-btn" type="submit">Add to cart</button>
+                </c:when>
+                <c:otherwise>
+                    <button style="width: 190px; height: 35px; background-color: red; color: white; font-weight: 600" class="add-to-cart-btn" type="button" disabled>Out of Stock</button>
+                </c:otherwise>
+            </c:choose>
         </form>
             
         <button class="add-to-cart-btn" onclick="viewProduct(${pro.getId()});">View Product</button>

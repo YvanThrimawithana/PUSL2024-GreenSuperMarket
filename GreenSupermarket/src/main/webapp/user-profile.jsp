@@ -26,7 +26,9 @@
                 <img class="img1" src="assets/images/nav.png">
                 <ul>
                     <li><a href="home.jsp">Home</a></li>
-                    <li><a href="/">Categories</a></li>
+                    <li><a href="vegetableC.jsp">Vegetable</a></li>
+                    <li><a href="fruitsC.jsp">Fruits</a></li>
+                    <li><a href="meatsc.jsp">Meat</a></li>
                     <li><a href="feedback.jsp">Feedback</a></li>
                     <!-- Add text inside the hamburger menu for smaller screens -->
                     <li class="menu-item"><a href="wishlist.jsp">Wishlist</a></li>

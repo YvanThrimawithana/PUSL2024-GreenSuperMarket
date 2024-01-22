@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-   version="6.0">
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <servlet>
+        <servlet-name>AuthorizePaymentServlet</servlet-name>
+        <servlet-class>Servlet.AuthorizePaymentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PaymentServices</servlet-name>
+        <servlet-class>Servlet.PaymentServices</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ExecutePaymentServlet</servlet-name>
+        <servlet-class>Servlet.ExecutePaymentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ReviewPaymentServlet</servlet-name>
+        <servlet-class>Servlet.ReviewPaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthorizePaymentServlet</servlet-name>
+        <url-pattern>/AuthorizePaymentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentServices</servlet-name>
+        <url-pattern>/PaymentServices</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExecutePaymentServlet</servlet-name>
+        <url-pattern>/ExecutePaymentServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ReviewPaymentServlet</servlet-name>
+        <url-pattern>/ReviewPaymentServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>Servlet.authentication</filter-class>
     </filter>
-
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/cart.jsp</url-pattern>
     </filter-mapping>
-
-   <filter-mapping>
+    <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/wishlist.jsp</url-pattern>
     </filter-mapping>
-
     <filter-mapping>
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/user-profile.jsp</url-pattern>
@@ -32,7 +57,4 @@
         <filter-name>AuthenticationFilter</filter-name>
         <url-pattern>/feedback.jsp</url-pattern>
     </filter-mapping>
-    
-    
- 
 </web-app>

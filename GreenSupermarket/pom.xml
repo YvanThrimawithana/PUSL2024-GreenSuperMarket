@@ -12,11 +12,14 @@
         <jakartaee>10.0.0</jakartaee>
     </properties>
     
+
+    
     <dependencies>
         <dependency>
             <groupId>com.paypal.sdk</groupId>
             <artifactId>rest-api-sdk</artifactId>
             <version>1.14.0</version>
+            <type>jar</type>
 	</dependency>
 
         <dependency>
@@ -57,9 +60,17 @@
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
             <version>3.0.1</version>
         </dependency>
-        
-
-
+        <dependency>
+            <groupId>net.codejava</groupId>
+            <artifactId>PaypalTest</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
     </dependencies>
     
     <build>

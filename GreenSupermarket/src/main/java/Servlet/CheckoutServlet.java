@@ -42,10 +42,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response)
             // Call the insertOrder method for each item in the cart
             CheckoutDAO.insertOrder(UserEmail,productName, price, quantity);
 
-            // Output details for debugging
-            System.out.println("Inserted order for product: " + productName +
-                               ", Price: " + price +
-                               ", Quantity: " + quantity);
+            
         }
 
         // Redirect to the success page

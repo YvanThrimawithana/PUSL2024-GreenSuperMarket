@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Class;
 
 import GetterSetters.CartItems;
@@ -19,58 +15,89 @@ import java.util.List;
  * @author yvant
  */
 public class CheckoutDAO {
-    public static void insertOrder(String Email, String ProductName, double prod_price, int prod_quantity){
+    
+    public static void insertOrder(String userEmail, String productName, double prodPrice, int prodQuantity) {
         String url = "jdbc:mysql://localhost:3306/GreenSupermarketDB";
         String username = "root";
         String password = "4851";
 
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
-            // SQL query to insert order information into the database
-            String sql = "INSERT INTO Orders (c_email, prod_name, prod_price, prod_quantity) VALUES (?, ?, ?, ?)";
+            // SQL query to insert order information into the "Orders" table
+            String insertOrderSql = "INSERT INTO Orders (c_email, prod_name, prod_price, prod_quantity) VALUES (?, ?, ?, ?)";
 
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            try (PreparedStatement insertOrderStatement = connection.prepareStatement(insertOrderSql)) {
                 // Set the values for the prepared statement
-                statement.setString(1, Email);
-                statement.setString(2, ProductName);
-                statement.setDouble(3, prod_price);
-                statement.setInt(4, prod_quantity);
+                insertOrderStatement.setString(1, userEmail);
+                insertOrderStatement.setString(2, productName);
+                insertOrderStatement.setDouble(3, prodPrice);
+                insertOrderStatement.setInt(4, prodQuantity);
 
-                // Execute the query to insert the data
-                statement.executeUpdate();
+                // Execute the query to insert the data into the "Orders" table
+                insertOrderStatement.executeUpdate();
             }
+
+            // SQL query to delete data from the "CartItems" table
+            String deleteCartItemsSql = "DELETE FROM Cart WHERE c_email = ?";
+
+            try (PreparedStatement deleteCartItemsStatement = connection.prepareStatement(deleteCartItemsSql)) {
+                // Set the values for the prepared statement
+                deleteCartItemsStatement.setString(1, userEmail);
+                
+
+                // Execute the query to delete data from the "CartItems" table
+                deleteCartItemsStatement.executeUpdate();
+            }
+
         } catch (SQLException e) {
             e.printStackTrace(); // Handle the exception appropriately in your application
         }
     }
-      public static List<CheckoutItems> getCheckout(String UserEmail) {
-           List<CheckoutItems> mainlist = new ArrayList<>();
-         try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/GreenSupermarketDB", "root","4851");
 
-        String sql = "SELECT * FROM Orders WHERE c_email = ?";
+    public static List<CheckoutItems> getCheckout(String userEmail) {
+        List<CheckoutItems> mainlist = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/GreenSupermarketDB", "root", "4851");
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, UserEmail);
+            String sql = "SELECT * FROM Orders WHERE c_email = ?";
 
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                while (resultSet.next()) {
-                  
-                    CheckoutItems check = new CheckoutItems();
-                    check.setOrderId(resultSet.getInt("order_id"));
-                    check.setProdName(resultSet.getString("prod_name"));
-                    check.setProdQuantity(resultSet.getInt("prod_quantity"));
-                    check.setProdPrice(resultSet.getDouble("prod_price"));
-                  
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, userEmail);
 
-                    mainlist.add(check); // Add the WishlistItems object to the list
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+
+                        CheckoutItems check = new CheckoutItems();
+                        check.setOrderId(resultSet.getInt("order_id"));
+                        check.setProdName(resultSet.getString("prod_name"));
+                        check.setProdQuantity(resultSet.getInt("prod_quantity"));
+                        check.setProdPrice(resultSet.getDouble("prod_price"));
+
+                        mainlist.add(check); // Add the CheckoutItems object to the list
+                    }
                 }
             }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         }
-    } catch (ClassNotFoundException | SQLException e) {
-        e.printStackTrace();
+
+        return mainlist;
     }
 
-    return mainlist;
-}
+     public static void clearOrder(String userEmail) {
+        String url = "jdbc:mysql://localhost:3306/GreenSupermarketDB";
+        String username = "root";
+        String password = "4851";
+
+        // Example SQL query to clear the order table for the specified user
+        String sql = "DELETE FROM Orders WHERE c_email = ?";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, userEmail);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately in your application
+        }
+    }
 }

@@ -4,6 +4,7 @@
  */
 package Servlet;
 
+import Class.Wishlist;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;

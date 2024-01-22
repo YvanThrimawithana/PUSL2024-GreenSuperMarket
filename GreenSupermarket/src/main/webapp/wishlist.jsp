@@ -4,12 +4,11 @@
     Author     : yvant
 --%>
 
-<%@page import="Servlet.wishlistitems"%>
+<%@page import="Class.Wishlist"%>
+<%@page import="GetterSetters.wishlistitems"%>
+
 <%@page import="java.util.List"%>
-<%@page import="Servlet.WishlistBean"%>
-<%@page import="Servlet.Wishlist"%>
 <%@page import="java.util.List"%>
-<%@page import="Servlet.Wishlist"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -40,7 +39,9 @@
                 <img class="img1" src="assets/images/nav.png">
                 <ul>
                     <li><a href="home.jsp">Home</a></li>
-                    <li><a href="/">Categories</a></li>
+                    <li><a href="vegetableC.jsp">Vegetable</a></li>
+                    <li><a href="fruitsC.jsp">Fruits</a></li>
+                    <li><a href="meatsc.jsp">Meat</a></li>
                     <li><a href="feedback.jsp">Feedback</a></li>
                     <!-- Add text inside the hamburger menu for smaller screens -->
                     <li class="menu-item"><a href="wishlist.jsp">Wishlist</a></li>
@@ -94,9 +95,10 @@
                         <div class="wishlist-cell">
                             <span class="wishlist-label">${item.quantity}</span>
                         </div>
-                        <div class="wishlist-cell">
-                            <button class="btn view-product-btn" onclick="viewProduct(${item.id});">View Product</button>
+                        <div class="wishlist-cell"  >
+                            <button style="background-color: green; width: 100%x " class="btn view-product-btn" onclick="viewProduct(${item.id});">View Product</button>
                         </div>
+                        
                         <div class="wishlist-cell">
                         <form action="<%=request.getContextPath()%>/RemoveWishlist" method="post">
                             <input type="hidden" name="productId" value="${item.id}">
@@ -160,8 +162,7 @@
     </section>   
     
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
+   
 
 * {
     margin: 0;

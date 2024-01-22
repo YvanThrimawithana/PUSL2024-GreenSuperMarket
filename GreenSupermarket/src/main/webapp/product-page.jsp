@@ -1,9 +1,11 @@
+<%@page import="Class.SelectItemDAO"%>
+<%@page import="GetterSetters.SelectItem"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.List" %>
-<%@ page import="Servlet.SelectItemDAO" %>
+<%--<%@ page import="Servlet.SelectItemDAO" %>
 <%@ page import="Servlet.SelectItem" %>
-<%@ page import="Servlet.Wishlist" %>
+<%@ page import="Servlet.Wishlist" %>--%>
 
 <%
 
@@ -25,8 +27,8 @@
     <link rel="stylesheet" href="css/product-page.css">
 </head>
 <body>
-       <!--navbar-->
-     <div class="navbar-list">
+   <!--navbar-->
+    <div class="navbar-list">
         <div class="navbar">
             <nav>
                 <input type="checkbox" id="check">
@@ -36,7 +38,9 @@
                 <img class="img1" src="assets/images/nav.png">
                 <ul>
                     <li><a href="home.jsp">Home</a></li>
-                    <li><a href="/">Categories</a></li>
+                    <li><a href="vegetableC.jsp">Vegetable</a></li>
+                    <li><a href="fruitsC.jsp">Fruits</a></li>
+                    <li><a href="meatsc.jsp">Meat</a></li>
                     <li><a href="feedback.jsp">Feedback</a></li>
                     <!-- Add text inside the hamburger menu for smaller screens -->
                     <li class="menu-item"><a href="wishlist.jsp">Wishlist</a></li>
@@ -61,42 +65,46 @@
                 <p id="productPrice">Price : $${item.getPrice()}</p>
                 <p id="productPrice">Remaining : ${item.getQuantity()}g</p>
 
-                <form >
+                <form>
                     <input type="hidden" name="productId" value="${item.getId()}">
                     <label for="quantity">Quantity (100g):</label>
                     <input type="number" id="quantity" name="quantity" value="1" max="${item.getQuantity()}" min="0" oninput="updateQuantity(this)"><br><br>
                 </form>
                 <form action="<%=request.getContextPath()%>/AddCartServlet" method="post">
                     <input type="hidden" name="productId" value="${item.getId()}">
-                    <button class="button" type="submit" id="add">Add to Cart</button>
+                    <% if(item.getQuantity() > 0) { %>
+                        <button class="button" type="submit" id="add">Add to Cart</button>
+                    <% } else { %>
+                    <button style="background-color: red; font-weight: 600; color: white" class="button" type="button" id="add" disabled>Out of Stock</button>
+                    <% } %>
                 </form>
-                    
-                
                 <form action="<%=request.getContextPath()%>/addToWishlist" method="post">
                     <input type="hidden" name="productId" value="${item.getId()}">
-                    <button class="button" type="submit" id="heart">Add to Wishlist</button>
+                    <button class="button" type="submit" id="heart" >Add to Wishlist</button>
+                    
                 </form>
             </div>
         </div>
     </div>
-<script>
-    function updateQuantity(input) {
-        // Get the maximum allowed value
-        var maxAllowed = parseInt(input.getAttribute('max'));
 
-        // If the entered quantity is greater than the maximum, set it to max - 50
-        if (input.value > maxAllowed) {
-            input.value = maxAllowed;
+    <script>
+        function updateQuantity(input) {
+            // Get the maximum allowed value
+            var maxAllowed = parseInt(input.getAttribute('max'));
+
+            // If the entered quantity is greater than the maximum, set it to max - 50
+            if (input.value > maxAllowed) {
+                input.value = maxAllowed;
+            }
         }
-    }
 
         // JavaScript function to redirect to the item details page with a parameter
         function viewItemDetails(itemId) {
             window.location.href = 'product-page.jsp?itemId=' + itemId;
         }
     </script>
-    
-      <section>
+
+    <section>
         <footer id="footer">
             <div id="container">
                 <div id="row">
